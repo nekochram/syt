@@ -5,7 +5,7 @@
     <!-- 首页搜索医院的表单区域 -->
     <Search />
     <!-- 底部展示医院的结构 -->
-    <el-row gutter="20">
+    <el-row :gutter="20">
       <el-col :span="20">
         <!-- 等级子组件 -->
         <Level @getLevel="getLevel" />
@@ -34,7 +34,9 @@
           @size-change="getHospitalList"
         />
       </el-col>
-      <el-col :span="4"> </el-col>
+      <el-col :span="4">
+        <Tip/>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -52,6 +54,7 @@ import Level from "./level/index.vue";
 import Region from "./region/index.vue";
 //展示医院新的的卡片组件
 import Card from "./card/index.vue";
+import Tip from './tip/index.vue'
 import { reqHospital } from "@/api/home/index";
 import {Content,HospitalResponseData} from '@/api/home/type'
 let hasHospitalArr = ref<Content>([]);

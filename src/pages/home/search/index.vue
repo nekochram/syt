@@ -18,6 +18,8 @@ import { Search } from "@element-plus/icons-vue";
 import {reqHospitalInfo} from '@/api/home/index'
 import type { HospitalInfo } from "@/api/home/type";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+let router=useRouter()
 let hosname=ref<string>('')
 const fetchData=async (keyword:string,cb:any)=>{
     let result:HospitalInfo=await reqHospitalInfo({hosname:keyword})
@@ -29,8 +31,8 @@ const fetchData=async (keyword:string,cb:any)=>{
     })
     cb(showData)
 }
-const goDetail=()=>{
-
+const goDetail=(item:any)=>{
+    router.push({path:'/hospital/register',query:{hoscode:item.hoscode}})
 }
 </script>
 <style scoped lang="scss">
