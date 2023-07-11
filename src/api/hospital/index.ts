@@ -3,9 +3,6 @@ import request from "@/utils/request";
 import type { DoctorInfoData,UserResponseData, DoctorResponseData, HospitalWordData, WXLoginResponseData, HospitalDetail, DeparmentResponseData, LoginData, UserLoginResponseData } from './type'
 //枚举请求地址
 enum API {
-    HOSPITALDETAIL_URL = '/hosp/hospital/',
-    //获取某一个医院的科室的数据
-    HOSPITALDEPARMENT_URL = '/hosp/hospital/department/',
     //获取验证码接口
     GETUSERCODE_URL = '/sms/send/',
     //用户登录接口
@@ -24,7 +21,7 @@ enum API {
 //获取医院详情的接口
 export const reqHospitalDetail = (params:{hoscode: string}) => request.get<any, HospitalDetail>(`/hosp/hospital/${params.hoscode}`);
 //获取医院科室的接口
-export const reqHospitalDeparment = (hoscode: string) => request.get<any, DeparmentResponseData>(API.HOSPITALDEPARMENT_URL + hoscode);
+export const reqHospitalDeparment = (params:{hoscode: string}) => request.get<any, DeparmentResponseData>(`/hosp/hospital/department/${params.hoscode}`);
 //获取验证码接口
 export const reqCode = (phone: string) => request.get<any, any>(API.GETUSERCODE_URL + phone);
 //用户登录接口

@@ -1,1 +1,1 @@
-尚硅谷vue3+vite+ts尚医通项目
+尚硅谷vue3+vite+ts+pinia尚医通项目
