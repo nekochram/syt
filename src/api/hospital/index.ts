@@ -3,10 +3,6 @@ import request from "@/utils/request";
 import type { DoctorInfoData,UserResponseData, DoctorResponseData, HospitalWordData, WXLoginResponseData, HospitalDetail, DeparmentResponseData, LoginData, UserLoginResponseData } from './type'
 //枚举请求地址
 enum API {
-    //获取验证码接口
-    GETUSERCODE_URL = '/sms/send/',
-    //用户登录接口
-    USERLOGIN_URL = '/user/login',
     //获取微信扫码登录需要参数
     WXLOGIN_URL = '/user/weixin/getLoginParam/',
     //获取某一个医院的某一个科室预约挂号数据
@@ -23,9 +19,9 @@ export const reqHospitalDetail = (params:{hoscode: string}) => request.get<any, 
 //获取医院科室的接口
 export const reqHospitalDeparment = (params:{hoscode: string}) => request.get<any, DeparmentResponseData>(`/hosp/hospital/department/${params.hoscode}`);
 //获取验证码接口
-export const reqCode = (phone: string) => request.get<any, any>(API.GETUSERCODE_URL + phone);
+export const reqCode = (params:{phone: string}) => request.get<any, any>(`/sms/send/${params.phone}`);
 //用户登录接口
-export const reqUserLogin = (data: LoginData) => request.post<any, UserLoginResponseData>(API.USERLOGIN_URL, data);
+export const reqUserLogin = (params: LoginData) => request.post<any, UserLoginResponseData>('/user/login', params);
 
 //获取微信扫码登录生成二维码需要参数接口
 export const reqWxLogin = (wxRedirectUri: string) => request.get<any, WXLoginResponseData>(API.WXLOGIN_URL + `?wxRedirectUri=${wxRedirectUri}`);

@@ -9,12 +9,13 @@
     </div>
     <FooterNav/>
     <!-- 登录组件 -->
-
+    <Login v-if="userStore.visiable"/>
   </div>
 </template>
 
 <script setup lang="ts">
-
+import useUserStore from './store/modules/user';
+let userStore=useUserStore()
 </script>
 
 <style scoped lang="scss">
