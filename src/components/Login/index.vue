@@ -161,13 +161,13 @@
 //@ts-ignore
 import { ElMessage } from "element-plus";
 //引入倒计时组件
-import CountDown from "../countdown/index.vue";
-
+import CountDown from "../CountDown/index.vue";
+import { reqWxLogin } from "@/api/hospital/index";
+import { WXLoginResponseData } from "@/api/hospital/type";
 import { User, Lock } from "@element-plus/icons-vue";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, watch } from "vue";
 //获取user仓库的数据( visiable)可以控制login组件的对话框显示与隐藏
 import useUserStore from "@/store/modules/user";
-import { fa } from "element-plus/es/locale";
 let userStore = useUserStore();
 //获取路由器对象
 
@@ -189,8 +189,21 @@ let isPhone = computed(() => {
 });
 //点击微信扫码登录|微信小图标切换为微信扫码登录
 const changeScene = async () => {
+  let wxRedirectUri = encodeURIComponent(window.location.origin + "/wxlogin");
+  let result: WXLoginResponseData = await reqWxLogin({ wxRedirectUri });
   //切换场景为1
   scene.value = 1;
+  //@ts-ignore
+  new WxLogin({
+    self_redirect: true, //true:手机点击确认登录后可以在 iframe 内跳转到 redirect_uri
+    id: "login_container", //显示二维码容器设置
+    appid: result.data.appid, //应用位置标识appid
+    scope: "snsapi_login", //当前微信扫码登录页面已经授权了
+    redirect_uri: result.data.redirectUri, //填写授权回调域路径,就是用户授权成功以后，微信服务器向公司后台推送code地址
+    state: result.data.state, //state就是学校服务器重定向的地址携带用户信息
+    style: "black",
+    href: "",
+  });
 };
 //获取验证码按钮的回调
 const getCode = async () => {
@@ -268,6 +281,12 @@ const closeDialog = () => {
 const handler = () => {
   scene.value = 0;
 };
+watch(
+  () => scene.value,
+  (val: number) => {
+    val === 1 && userStore.queryState();
+  }
+);
 </script>
 <script lang="ts">
 export default {
@@ -290,6 +309,7 @@ export default {
       flex-direction: column;
       align-items: center;
       .phone {
+        cursor: pointer;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -300,6 +320,7 @@ export default {
     }
   }
   .bottom {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -38,6 +38,17 @@ const useUserStore=defineStore('User',{
             this.userInfo = { name: '', token: '' };
             //清空本地存储的数据
             REMOVE_USERINFO();
+        },
+        //查询微信扫码的接口(看本地存储是否存储数据)
+        queryState(){
+            let timer=setInterval(()=>{
+                let info=GET_USERINFO()
+                if(info){
+                    this.visiable=false
+                    this.userInfo=JSON.parse(info)
+                    clearInterval(timer)
+                }
+            },1000)
         }
     },
     getters:{
