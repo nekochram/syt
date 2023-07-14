@@ -3,8 +3,6 @@ import request from "@/utils/request";
 import type { DoctorInfoData,UserResponseData, DoctorResponseData, HospitalWordData, WXLoginResponseData, HospitalDetail, DeparmentResponseData, LoginData, UserLoginResponseData } from './type'
 //枚举请求地址
 enum API {
-    //获取某一个医院的某一个科室预约挂号数据
-    HOSPITALWORK_URL = '/hosp/hospital/auth/getBookingScheduleRule/',
     //获取医院某一个科室某一天相应医生排班的数据
     HOSPITALDOCTOR_URL = '/hosp/hospital/auth/findScheduleList/',
     //获取某一个账号下就诊人的信息
@@ -24,9 +22,9 @@ export const reqUserLogin = (params: LoginData) => request.post<any, UserLoginRe
 //获取微信扫码登录生成二维码需要参数接口
 export const reqWxLogin = (params:{wxRedirectUri: string}) => request.get<any, WXLoginResponseData>(`/user/weixin/getLoginParam/?wxRedirectUri=${params.wxRedirectUri}`);
 //获取预约挂号的数据
-export const reqHospitalWork = (page: number, limit: number, hoscode: string, depcode: string) => request.get<any, HospitalWordData>(API.HOSPITALWORK_URL + `${page}/${limit}/${hoscode}/${depcode}`);
+export const reqHospitalWork = (params:{page: number, limit: number, hoscode: string, depcode: string}) => request.get<any, HospitalWordData>(`/hosp/hospital/auth/getBookingScheduleRule/${params.page}/${params.limit}/${params.hoscode}/${params.depcode}`);
 //获取医生排班的数据
-export const reqHospitalDoctor = (hoscode: string, depcode: string, workDate: string) => request.get<any, DoctorResponseData>(API.HOSPITALDOCTOR_URL + `${hoscode}/${depcode}/${workDate}`);
+export const reqHospitalDoctor = (params:{hoscode: string, depcode: string, workDate: string}) => request.get<any, DoctorResponseData>(`/hosp/hospital/auth/findScheduleList/${params.hoscode}/${params.depcode}/${params.workDate}`);
 
 //获取某一个账号下就诊人信息
 export const reqGetUser = () => request.get<any, UserResponseData>(API.GETUSER_URL);
