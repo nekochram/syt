@@ -1,15 +1,6 @@
 //引入二次封装axios
 import request from "@/utils/request";
 import type { DoctorInfoData,UserResponseData, DoctorResponseData, HospitalWordData, WXLoginResponseData, HospitalDetail, DeparmentResponseData, LoginData, UserLoginResponseData } from './type'
-//枚举请求地址
-enum API {
-    //获取医院某一个科室某一天相应医生排班的数据
-    HOSPITALDOCTOR_URL = '/hosp/hospital/auth/findScheduleList/',
-    //获取某一个账号下就诊人的信息
-    GETUSER_URL = '/user/patient/auth/findAll',
-    //获取挂号医生的信息
-    GETDOCTOR_URL='/hosp/hospital/getSchedule/'
-}
 //获取医院详情的接口
 export const reqHospitalDetail = (params:{hoscode: string}) => request.get<any, HospitalDetail>(`/hosp/hospital/${params.hoscode}`);
 //获取医院科室的接口
@@ -27,7 +18,7 @@ export const reqHospitalWork = (params:{page: number, limit: number, hoscode: st
 export const reqHospitalDoctor = (params:{hoscode: string, depcode: string, workDate: string}) => request.get<any, DoctorResponseData>(`/hosp/hospital/auth/findScheduleList/${params.hoscode}/${params.depcode}/${params.workDate}`);
 
 //获取某一个账号下就诊人信息
-export const reqGetUser = () => request.get<any, UserResponseData>(API.GETUSER_URL);
+export const reqGetUser = () => request.get<any, UserResponseData>('/user/patient/auth/findAll');
 
 //获取挂号医生的信息
-export const reqDoctorInfo = (scheduleId:string)=>request.get<any,DoctorInfoData>(API.GETDOCTOR_URL+scheduleId);
+export const reqDoctorInfo = (params:{scheduleId:string})=>request.get<any,DoctorInfoData>(`/hosp/hospital/getSchedule/${params.scheduleId}`);

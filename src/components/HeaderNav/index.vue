@@ -20,10 +20,10 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item>实名认证</el-dropdown-item
+              <el-dropdown-item @click="go('/user/certification')">实名认证</el-dropdown-item
               >
-              <el-dropdown-item>挂号订单</el-dropdown-item>
-              <el-dropdown-item>就诊人管理</el-dropdown-item
+              <el-dropdown-item @click="go('/user/order')">挂号订单</el-dropdown-item>
+              <el-dropdown-item @click="go('/user/patient')">就诊人管理</el-dropdown-item
               >
               <el-dropdown-item @click="loginOut">退出登录</el-dropdown-item>
             </el-dropdown-menu>
@@ -49,6 +49,9 @@ const login=()=>{
 const loginOut=()=>{
     userStore.loginOut()
     goHome()
+}
+const go=(path:string)=>{
+    router.push({path})
 }
 </script>
 
