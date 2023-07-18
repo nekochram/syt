@@ -151,15 +151,16 @@ const changeIndex = (index: number) => {
 //确定挂号按钮的回调
 const submitOrder = async () => {
   //医院编号
-
+  let hoscode = docInfo.value.hoscode;
   //医生的ID
-
+  let scheduleId = docInfo.value.id;
   //就诊人的ID
-
+  let patientId = userArr.value[currentIndex.value].id;
   //提交订单
-
+  let result: SubmitOrder = await reqSubmitOrder({hoscode, scheduleId, patientId});
   //提交订单成功
   if (result.code == 200) {
+    router.push({ path: "/user/order", query: { orderId: result.data } });
   } else {
     ElMessage({
       type: "error",
@@ -169,9 +170,10 @@ const submitOrder = async () => {
 };
 
 //预约挂号添加就诊人按钮的方法
-const goUser = () => {
-  //路由跳转
-};
+const goUser = ()=>{
+   //路由跳转
+   router.push({path:'/user/patient',query:{type:'add'}})
+}
 </script>
 
 <style scoped lang="scss">

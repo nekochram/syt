@@ -51,7 +51,7 @@
 <script setup lang="ts">
 import { Edit, Delete } from "@element-plus/icons-vue";
 import { useRoute, useRouter } from "vue-router";
-
+import { reqRemoveUser } from "@/api/user";
 //@ts-ignore
 import { ElMessage } from "element-plus";
 let route = useRoute();
@@ -64,14 +64,19 @@ let emit = defineEmits(["changeScene",'removeUser']);
 const handler = () => {
   //要么是就诊人管理模块点击修改按钮
   //要么预约挂号点击修改按钮
-  
+  if (route.path == "/user/patient") {
+    emit("changeScene", props.user);
+  } else {
+    //路由跳转携带参数
+    router.push({ path: "/user/patient", query: { type: "edit", id: props.user.id } });
+  }
 };
 
 //删除某一个用户
 const removeUser = async () => {
   try {
     //删除用户成功
-
+    await reqRemoveUser(props.user.id);
     //消息提示
     ElMessage({
       type:'success',
