@@ -4,7 +4,10 @@ export default createRouter({
     routes:[
         {
             path:'/home',
-            component:()=>import('@/pages/home/index.vue')
+            component:()=>import('@/pages/home/index.vue'),
+            meta:{
+                title:'首页'
+            }
         },
         {
             path:'/hospital',

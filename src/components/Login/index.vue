@@ -156,21 +156,22 @@
 </template>
 
 <script setup lang="ts">
-//引入wx扫码登录参数请求
-
 //@ts-ignore
 import { ElMessage } from "element-plus";
 //引入倒计时组件
 import CountDown from "../CountDown/index.vue";
+//引入wx扫码登录参数请求
 import { reqWxLogin } from "@/api/hospital/index";
 import { WXLoginResponseData } from "@/api/hospital/type";
 import { User, Lock } from "@element-plus/icons-vue";
 import { ref, reactive, computed, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
 //获取user仓库的数据( visiable)可以控制login组件的对话框显示与隐藏
 import useUserStore from "@/store/modules/user";
 let userStore = useUserStore();
 //获取路由器对象
-
+let router = useRouter();
+let route = useRoute();
 //定义一个响应式数据控制倒计时组件显示与隐藏
 let flag = ref<boolean>(false);
 let scene = ref<number>(0); //0代表收集号码登录  如果是1 微信扫码登录
@@ -227,12 +228,18 @@ const setFlag = (val: boolean) => {
 
 //点击用户登录按钮回调
 const login = async () => {
+  let redirect = route.query.redirect;
   await form.value.validate();
   try {
     await userStore.login(loginParam);
     userStore.visiable = false;
+    if (redirect) {
+      router.push(redirect as string);
+    } else {
+      router.push("/home");
+    }
   } catch (error) {
-    ElMessage.error(error.message);
+    ElMessage.error((error as Error).message);
   }
 };
 
